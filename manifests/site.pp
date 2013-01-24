@@ -23,14 +23,14 @@ define nginx_lb::site ($domain, $ssl=false, $ip=$ipaddress) {
 
 	if ($ssl != false) {
 		file {
-			"/etc/nginx/certs/${site}.crt":
+			"/etc/nginx/certs/${name}.crt":
 				require => File['/etc/nginx/certs/'],
-				source	=> "puppet:///files/certs/${site}.crt",
+				source	=> "puppet:///files/certs/${name}.crt",
 		}
 		file {
-			"/etc/nginx/certs/${site}.key":
+			"/etc/nginx/certs/${name}.key":
 				require => File['/etc/nginx/certs/'],
-				source	=> "puppet:///files/certs/${site}.key",
+				source	=> "puppet:///files/certs/${name}.key",
 		}
 	}
 }
