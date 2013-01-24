@@ -14,7 +14,7 @@ server {
     #error_log {{ deployment.path }}../log/nginx/error.log;
 
     location / {
-        proxy_pass http://<%= @name %>;
+        proxy_pass http<% if @ssl %>s<% end %>://<%= @name %>;
         proxy_redirect              off;
         proxy_set_header            Host $host;
         proxy_set_header            X-Real-IP $remote_addr;
