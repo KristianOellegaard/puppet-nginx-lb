@@ -1,22 +1,21 @@
 
 # Define: nginx_lb::site
 # Parameters:
-# $site
 # $domain
 # $ssl - defaults to false
 #
-define nginx_lb::site ($site, $domain, $ssl=false, $ip=false) {
+define nginx_lb::site ($domain, $ssl=false, $ip=false) {
 	concat { "/etc/nginx/sites-enabled/${site}.conf":
 		notify => Service['nginx'],
 	}
 
-	concat::fragment {"${site}_start":
-		target => "/etc/nginx/sites-enabled/${site}.conf",
+	concat::fragment {"${name}_start":
+		target => "/etc/nginx/sites-enabled/${name}.conf",
 		order => 01,
 		content => template("nginx_lb/nginx_start.erb")
 	}
-	concat::fragment {"${site}_end":
-		target => "/etc/nginx/sites-enabled/${site}.conf",
+	concat::fragment {"${name}_end":
+		target => "/etc/nginx/sites-enabled/${name}.conf",
 		order => 99,
 		content => template("nginx_lb/nginx_end.erb")
 	}
