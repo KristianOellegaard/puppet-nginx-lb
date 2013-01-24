@@ -5,27 +5,30 @@
 # $domain
 # $ssl - defaults to false
 #
-define nginx_lb::site ($site, $domain, $ssl=false) {
+define nginx_lb::site ($site, $domain, $ssl=false, $ip=false) {
 	concat { "/etc/nginx/sites-enabled/${site}.conf":
 		notify => Service['nginx'],
 	}
 
 	concat::fragment {"${site}_start":
 		target => "/etc/nginx/sites-enabled/${site}.conf",
-		order => 0,
-		content => template("nginx_start.erb")
+		order => 01,
+		content => template("nginx_lb/nginx_start.erb")
 	}
 	concat::fragment {"${site}_end":
 		target => "/etc/nginx/sites-enabled/${site}.conf",
-		order => 101,
-		content => template("nginx_end.erb")
+		order => 99,
+		content => template("nginx_lb/nginx_end.erb")
 	}
 
 	if ($ssl != false) {
 		file {
 			"/etc/nginx/certs/$site.crt":
 				require => File['/etc/nginx/certs/'],
-
+		}
+		file {
+			"/etc/nginx/certs/$site.key":
+				require => File['/etc/nginx/certs/'],
 		}
 	}
 }
@@ -40,7 +43,7 @@ define nginx_lb::endpoint ($site, $endpoint, $weight=10) {
 	concat::fragment {"${site}_${endpoint}":
 		target => "/etc/nginx/sites-enabled/${site}.conf",
 		order => $weight,
-		content => "server $endpoint weight=${weight};"
+		content => "\n server $endpoint weight=${weight};"
 	}
 	
 }
