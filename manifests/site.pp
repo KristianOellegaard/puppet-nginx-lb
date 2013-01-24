@@ -5,7 +5,7 @@
 # $ssl - defaults to false
 #
 define nginx_lb::site ($domain, $ssl=false, $ip=$ipaddress) {
-	concat { "/etc/nginx/sites-enabled/${site}.conf":
+	concat { "/etc/nginx/sites-enabled/${name}.conf":
 		notify => Service['nginx'],
 		require => Package['nginx'],
 	}
