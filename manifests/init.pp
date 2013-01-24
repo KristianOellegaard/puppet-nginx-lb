@@ -6,7 +6,6 @@ class nginx_lb {
 	 	enable => true,
 	 	ensure => running,
 	 	hasrestart => true,
-	 	hasreload => true,
 	 	hasstatus => true,
 	 	require => Package["nginx"],
 	 }
