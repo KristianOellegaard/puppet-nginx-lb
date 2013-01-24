@@ -46,7 +46,6 @@ define nginx_lb::endpoint ($site, $endpoint, $weight=10) {
 		target => "/etc/nginx/sites-enabled/${site}.conf",
 		order => $weight,
 		content => "\n server $endpoint weight=${weight};",
-		require => Nginx_lb::Site[$site];
 	}
 	
 }
