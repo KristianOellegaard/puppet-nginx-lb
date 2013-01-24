@@ -4,7 +4,7 @@
 # $domain
 # $ssl - defaults to false
 #
-define nginx_lb::site ($domain, $ssl=false, $ip=false) {
+define nginx_lb::site ($domain, $ssl=false, $ip=$ipaddress) {
 	concat { "/etc/nginx/sites-enabled/${site}.conf":
 		notify => Service['nginx'],
 	}
@@ -22,12 +22,14 @@ define nginx_lb::site ($domain, $ssl=false, $ip=false) {
 
 	if ($ssl != false) {
 		file {
-			"/etc/nginx/certs/$site.crt":
+			"/etc/nginx/certs/${site}.crt":
 				require => File['/etc/nginx/certs/'],
+				source	=> "puppet:///files/certs/${site}.crt",
 		}
 		file {
-			"/etc/nginx/certs/$site.key":
+			"/etc/nginx/certs/${site}.key":
 				require => File['/etc/nginx/certs/'],
+				source	=> "puppet:///files/certs/${site}.key",
 		}
 	}
 }
