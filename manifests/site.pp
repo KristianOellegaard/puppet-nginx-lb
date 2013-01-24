@@ -7,6 +7,7 @@
 define nginx_lb::site ($domain, $ssl=false, $ip=$ipaddress) {
 	concat { "/etc/nginx/sites-enabled/${site}.conf":
 		notify => Service['nginx'],
+		require => Package['nginx'],
 	}
 
 	concat::fragment {"${name}_start":
