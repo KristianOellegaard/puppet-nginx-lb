@@ -8,6 +8,7 @@ class nginx_lb {
 	 	hasrestart => true,
 	 	hasstatus => true,
 	 	require => Package["nginx"],
+	 	restart => "/usr/bin/service nginx reload",
 	 }
 	 file {
 	 	"/etc/nginx/certs/":
